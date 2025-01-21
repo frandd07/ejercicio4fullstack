@@ -38,11 +38,11 @@ export default function ListHabitos() {
         );
     }
         
-    async function deleteHabito(habitoId) {
+    async function deleteHabito(habitoID) {
             await fetch("/api/habito", {
                 method: "DELETE",
                 headers: { "content-type": "application/json" },
-                body: JSON.stringify({ id: habitoId }),
+                body: JSON.stringify({ id: habitoID }),
             });
 
             fetchHabitos();
