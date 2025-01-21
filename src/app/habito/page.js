@@ -1,5 +1,6 @@
 'use client'
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function ListHabitos() {
@@ -8,7 +9,10 @@ export default function ListHabitos() {
     async function fetchHabitos() {
         const response = await fetch("/api/habito");
         const body = await response.json();
-        setHabitos(body);
+
+        const fechaActual = new Date().toLocaleDateString("en-CA")
+        const habitosDeHoy = body.filter(habito => habito.fecha === fechaActual);
+        setHabitos(habitosDeHoy);
     }
 
     useEffect(() => {
@@ -27,11 +31,24 @@ export default function ListHabitos() {
             })
         })
 
-        fetchHabitos()
-     
+        setHabitos((listaAnterior) =>
+            listaAnterior.map((habito) =>
+                habito.id === id ? { ...habito, completado } : habito
+            )
+        );
+    }
+        
+    async function deleteHabito(habitoId) {
+            await fetch("/api/habito", {
+                method: "DELETE",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({ id: habitoId }),
+            });
+
+            fetchHabitos();
     }
 
-    return (
+    return (    
         <div>
             <table border="1">
                 <caption>Hábitos de hoy</caption>
@@ -58,10 +75,13 @@ export default function ListHabitos() {
                                     />
                                 </label>
                             </td>
+                            <td><button onClick={() => deleteHabito(habito.id)}>❌</button></td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+             <br/>
+            <Link href={"/habito/create"}>Añadir hábito</Link>
         </div>
     );
 }    

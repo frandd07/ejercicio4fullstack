@@ -22,3 +22,23 @@ export async function PUT(request){
 
     return new Response(JSON.stringify({success: "Actualizado"}), {status:200})
 }
+
+export async function POST(request){
+    const body = await request.json()
+    const habito = body.habito
+    const{data: postData, error} = await supabase
+    .from("habito")
+    .insert(habito)
+
+    return new Response(JSON.stringify({success: "Actualizado"}), {status:200})
+}
+
+export async function DELETE(request){
+    const body = request.json()
+    const id = body.id
+    const{data: deleteData, error} = await supabase
+    .from("habito")
+    .delete()
+    .eq("id",id)
+    return new Response(JSON.stringify({success: "Eliminado con éxito"}), {status:200})
+}
