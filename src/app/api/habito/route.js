@@ -34,7 +34,7 @@ export async function POST(request){
 }
 
 export async function DELETE(request){
-    const body = request.json()
+    const body = await request.json()
     const id = body.id
     const{data: deleteData, error} = await supabase
     .from("habito")

@@ -38,7 +38,11 @@ export default function ListHabitos() {
         );
     }
         
-    async function deleteHabito(habitoID) {
+    async function deleteHabito(habitoID,completado) {
+        if (!completado) {
+            alert("El hábito no está completado y no puede ser eliminado.");
+            return;
+        }
             await fetch("/api/habito", {
                 method: "DELETE",
                 headers: { "content-type": "application/json" },
@@ -75,7 +79,7 @@ export default function ListHabitos() {
                                     />
                                 </label>
                             </td>
-                            <td><button onClick={() => deleteHabito(habito.id)}>❌</button></td>
+                            <td><button onClick={() => deleteHabito(habito.id,habito.completado)}>❌</button></td>
                         </tr>
                     ))}
                 </tbody>
