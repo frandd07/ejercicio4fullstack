@@ -42,7 +42,7 @@ export default function ListHabitos() {
             await fetch("/api/habito", {
                 method: "DELETE",
                 headers: { "content-type": "application/json" },
-                body: JSON.stringify({ id: habitoID }),
+                body: JSON.stringify({ id: habitoID })
             });
 
             fetchHabitos();
